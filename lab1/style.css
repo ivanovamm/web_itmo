@@ -1,0 +1,107 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    background: linear-gradient(45deg, hotpink, skyblue 100%) no-repeat;
+    background-size: 100% 100%;
+    font-family: Arial, sans-serif;
+    font-weight: 500;
+}
+.clock{
+    color: lightpink;
+}
+header {
+    font-size: 30px;
+    max-width: 1200px;
+
+}
+
+.r {
+    margin-right: 179px;
+    margin-top: 10px;
+    text-align: right;
+    color: black;
+    font-size: 20px;
+}
+
+.y {
+    margin: 0px;
+    text-align: right;
+    color: black;
+    font-size: 20px;
+}
+
+.x {
+    margin-top: 20px;
+    margin-right: 176px;
+    margin-bottom: 10px;
+    text-align: right;
+    color: black;
+    font-size: 20px;
+}
+
+input[type='checkbox']:checked {
+    box-shadow: 0 0 0 3px black;
+}
+
+table {
+    margin-top: 20px;
+    width: 50%;
+    margin-bottom: 20px;
+    border: 1px solid white;
+    border-collapse: collapse;
+}
+
+table th {
+    font-weight: bold;
+    padding: 5px;
+    background: lightblue;
+    border: 1px solid lightpink;
+}
+
+table td {
+    border: 1px solid white;
+    padding: 5px;
+}
+
+button {
+    font-family: Arial, sans-serif;
+    margin-right: 370px;
+    margin-bottom: 10px;
+    font-size: large;
+    cursor: pointer;
+    text-align: center;
+    width: 200px;
+    height: 50px;
+    margin-top: 10px;
+    border: solid black;
+    border-radius: 200px;
+    color: black;
+    /*background-image: linear-gradient(45deg, hotpink , skyblue 100%);*/
+}
+
+.clear {
+    background-color: skyblue
+}
+.check{
+    background-color: hotpink;
+}
+.graph{
+    margin-top: 20px;
+    margin-right: 370px;
+    margin-bottom: 10px;
+}
+form{
+    font-size: 20px;
+    margin-right: 60px;
+}
+
+.image{
+    margin-right: 350px;
+    margin-bottom: 10px;
+}
+
+
+
