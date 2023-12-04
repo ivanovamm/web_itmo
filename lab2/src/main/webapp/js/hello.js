@@ -6,7 +6,6 @@ function uncheckAllY(checkbox) {
         }
     });
 
-
 }
 
 function uncheckAllR(checkbox) {
@@ -21,7 +20,7 @@ function uncheckAllR(checkbox) {
 const table = document.getElementById("table");
 
 
-function check() {
+function check_values() {
     const x = document.getElementById("x_value").value;
     let y = undefined;
     let r = undefined;
@@ -55,8 +54,8 @@ function clear_table() {
 
 function send(x, y, r) {
     $.ajax({
-        url: 'ControllerServlet',
-        method: 'GET',
+        url: "/ControllerServlet",
+        method: 'POST',
         data: {r, x, y},
         success: function (data) {
             console.log(data)

@@ -1,4 +1,4 @@
-package com.example.lab2_3;
+package com.example.lab2_4;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,22 +8,24 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet("/ControllerServlet")
+@WebServlet(name = "ControllerServlet", urlPatterns = "/ControllerServlet")
 public class ControllerServlet extends HttpServlet {
-    String validate;
+    String check;
     String x;
     String y;
     String r;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        validate = request.getParameter("validate");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        check = request.getParameter("check");
         x = request.getParameter("x");
         y = request.getParameter("y");
         r = request.getParameter("r");
-
-        if (checkNull()) {
-            if (validate.equals("reload")) {
+        if (check.equals("submit")) {
+            request.getRequestDispatcher("/AreaCheckServlet").forward(request, response);
+        }
+        if (check != null && !check.trim().equals("")) {
+            if (check.equals("reload")) {
                 response.sendRedirect("index.jsp");
             } else {
                 request.getRequestDispatcher("/AreaCheckServlet").forward(request, response);
@@ -33,13 +35,5 @@ public class ControllerServlet extends HttpServlet {
         }
     }
 
-    private boolean checkNull() {
-        if (validate != null && !validate.trim().equals("") && (x != null && y != null && r != null) && (!x.trim().equals("")
-                && !y.trim().equals("") && !r.trim().equals(""))) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }
 

@@ -1,4 +1,4 @@
-package com.example.lab2_3;
+package com.example.lab2_4;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -6,7 +6,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -14,15 +13,17 @@ import java.util.LinkedList;
 
 import static java.lang.Math.pow;
 
-@WebServlet("/AreaCheckServlet")
+@WebServlet(name = "AreaCheckServlet", urlPatterns = "/AreaCheckServlet")
 public class AreaCheckServlet extends HttpServlet {
     LinkedList<String> response = new LinkedList<>();
     String message;
     Double x, y, r;
     String check;
 
+    private Result result;
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ServletContext servletContext = request.getServletContext();
         check = request.getParameter("check");
         x = Double.parseDouble(request.getParameter("x"));
@@ -41,21 +42,20 @@ public class AreaCheckServlet extends HttpServlet {
                 long startTime = System.nanoTime();
                 validate(x, y, r);
                 long timeResponse = (System.nanoTime() - startTime);
-                this.response.addFirst("<tr><td>" + x + "</td>" +
-                        "<td>" + y + "</td>" +
-                        "<td>" + r + "</td>" +
-                        "<td>" + currentTime + "</td>" +
-                        "<td>" + timeResponse + " ns" + "</td>" +
-                        "<td>" + message + "</td></tr>");
+                result.setX(x);
+                result.setY(y);
+                result.setR(r);
+                result.setCurrentTime(currentTime);
+                result.setTimeResponse(timeResponse);
+                result.setMessage(message);
+
             } else {
-                message = "<td>Value is incorrect!</td>";
-                this.response.addFirst("<tr>" + message + message + message + message + message + message + "</tr>");
+                this.result.setMessage("Value is incorrect!");
             }
-            servletContext.setAttribute("response", this.response);
-            response.sendRedirect("index.jsp");
         } else {
             response.setStatus(422);
         }
+
     }
 
     void validate(double x, double y, double r) {
@@ -95,4 +95,10 @@ public class AreaCheckServlet extends HttpServlet {
         }
         return false;
     }
+
+
+
+
+
+
 }

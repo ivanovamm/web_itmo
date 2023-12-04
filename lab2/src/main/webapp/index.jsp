@@ -5,15 +5,19 @@
   Time: 18:16
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.example.lab2_4.Result" %>
+<%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.ArrayList" %>
+<%--<jsp:useBean id="result" class="com.example.lab2_4.Result" scope="session"/>--%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="author" content="Мария Иванова">
-    <meta name="description" content="Лабораторная работа №1 по веб-программированию">
-    <title>Лабораторная работа №1</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta name="description" content="Лабораторная работа №2 по веб-программированию">
+    <title>I LOVE WEB</title>
+    <link rel="stylesheet" href="./style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
     <script src="js/hello.js" defer></script>
     <script src="js/graph.js" defer></script>
@@ -26,7 +30,7 @@
 <div class="x"><b>Input X:</b>
     <input type="text" size="40" id="x_value" , placeholder="(-5 ... 3)">
 </div>
-<form id="form" method="post" action="${pageContext.request.contextPath}/ControllerServlet">
+<form action="check.php" method="get" id="form">
     <div align="right" class="y">
         <b>Input Y:</b>
         <input type="checkbox" name="optionY" value="-2" id="y_value_-2" onchange="uncheckAllY(this)"> -2
@@ -47,9 +51,8 @@
     </div>
 </form>
 <div align="right">
-    <button class="check" id="check" onclick="check()">Check</button>
+    <button class="check" id="check" onclick="check_values()">Check</button>
 </div>
-<%--<img src="areas.png" class="image" align="right">--%>
 <canvas width="400" height="400" id="graph"></canvas>
 <div>
     <table id="table">
@@ -65,6 +68,21 @@
         </thead>
         <tbody>
         </tbody>
+<%--        <%--%>
+<%--            HashMap<String, String> data = new HashMap<String, String>();--%>
+<%--            for (int i = 0; i < result.getData().size(); i++) {--%>
+<%--                data = result.getData().get(i);--%>
+<%--        %>--%>
+<%--        <tr>--%>
+<%--            <td><%= data.get("x")%></td>--%>
+<%--            <td><%= data.get("y")%></td>--%>
+<%--            <td><%= data.get("r")%></td>--%>
+<%--            <td><%= data.get("current_time")%></td>--%>
+<%--            <td><%= data.get("time_response")%></td>--%>
+<%--            <td><%= data.get("message")%>--%>
+<%--            </td>--%>
+<%--        </tr>--%>
+<%--        <% }%>--%>
     </table>
 </div>
 <div align="left">
