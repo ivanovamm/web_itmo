@@ -1,10 +1,14 @@
 package com.example.lab2_4;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.HttpMethodConstraint;
+import jakarta.servlet.annotation.ServletSecurity;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -12,6 +16,11 @@ import java.util.List;
 
 
 @WebServlet("/check")
+@ServletSecurity(
+        httpMethodConstraints = {
+                @HttpMethodConstraint(value = "POST", rolesAllowed = "admin")
+        }
+)
 public class AreaCheckServlet extends HttpServlet {
 
 
@@ -47,6 +56,9 @@ public class AreaCheckServlet extends HttpServlet {
             List<? extends Number> YValues = Arrays.asList(1, 1.5, 2, 2.5, 3);
             return YValues.contains(r);
         }
+//        protected void doGet(HttpServletRequest request, HttpServletResponse response)
+//                throws ServletException, IOException{
+//        }
 
         protected void doPost(HttpServletRequest request, HttpServletResponse response) {
             LocalDateTime time = LocalDateTime.now();

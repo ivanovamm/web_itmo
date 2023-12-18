@@ -31,7 +31,7 @@
 <div class="x"><b>Input X:</b>
     <input type="text" size="40" id="x_value" , placeholder="(-5 ... 3)">
 </div>
-<form action="check.php" method="get" id="form">
+<form method="post" id="form">
     <div align="right" class="y">
         <b>Input Y:</b>
         <input type="checkbox" name="optionY" value="-2" id="y_value_-2" onchange="uncheckAllY(this)"> -2

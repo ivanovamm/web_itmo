@@ -2,6 +2,8 @@ package com.example.lab2_4;
 
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.HttpMethodConstraint;
+import jakarta.servlet.annotation.ServletSecurity;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,13 +12,23 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
 @WebServlet("/controller")
+@ServletSecurity(
+        httpMethodConstraints = {
+                @HttpMethodConstraint(value = "POST", rolesAllowed = "admin")
+        }
+)
+
 public class ControllerServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         processRequest(request, response);
     }
+
+//    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException {
+//    }
+
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
