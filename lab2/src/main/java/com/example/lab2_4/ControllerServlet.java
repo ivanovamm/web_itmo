@@ -1,5 +1,6 @@
 package com.example.lab2_4;
 
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -7,33 +8,31 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
-@WebServlet(name = "ControllerServlet", urlPatterns = "/ControllerServlet")
+@WebServlet("/controller")
 public class ControllerServlet extends HttpServlet {
-    String check;
-    String x;
-    String y;
-    String r;
 
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        check = request.getParameter("check");
-        x = request.getParameter("x");
-        y = request.getParameter("y");
-        r = request.getParameter("r");
-        if (check.equals("submit")) {
-            request.getRequestDispatcher("/AreaCheckServlet").forward(request, response);
-        }
-        if (check != null && !check.trim().equals("")) {
-            if (check.equals("reload")) {
-                response.sendRedirect("index.jsp");
+        processRequest(request, response);
+    }
+
+    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            if (request.getParameter("x") != null && request.getParameter("y") != null && request.getParameter("r") != null) {
+                request.getRequestDispatcher("./check").forward(request, response);
             } else {
-                request.getRequestDispatcher("/AreaCheckServlet").forward(request, response);
+                request.getRequestDispatcher("./index.jsp").forward(request, response);
             }
-        } else {
-            response.setStatus(422);
+
+        } catch (ServletException | IOException e) {
+
         }
     }
 
+    public static double getDouble(HttpServletRequest request, String parameter) {
+        String param = request.getParameter(parameter);
+        return Double.parseDouble(param.replace(",", "."));
+    }
 }
-

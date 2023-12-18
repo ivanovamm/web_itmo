@@ -6,10 +6,11 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="com.example.lab2_4.Result" %>
+<%@ page import="com.example.lab2_4.ResultBean" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.ArrayList" %>
-<%--<jsp:useBean id="result" class="com.example.lab2_4.Result" scope="session"/>--%>
+<%@ page import="com.example.lab2_4.ResultBean" %>
+<jsp:useBean id="result" class="com.example.lab2_4.ResultBean" scope="session"/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -68,21 +69,14 @@
         </thead>
         <tbody>
         </tbody>
-<%--        <%--%>
-<%--            HashMap<String, String> data = new HashMap<String, String>();--%>
-<%--            for (int i = 0; i < result.getData().size(); i++) {--%>
-<%--                data = result.getData().get(i);--%>
-<%--        %>--%>
-<%--        <tr>--%>
-<%--            <td><%= data.get("x")%></td>--%>
-<%--            <td><%= data.get("y")%></td>--%>
-<%--            <td><%= data.get("r")%></td>--%>
-<%--            <td><%= data.get("current_time")%></td>--%>
-<%--            <td><%= data.get("time_response")%></td>--%>
-<%--            <td><%= data.get("message")%>--%>
-<%--            </td>--%>
-<%--        </tr>--%>
-<%--        <% }%>--%>
+        <core:forEach var="result" items="${results.results}">
+            <tr>
+                <td>${result.x}</td>
+                <td>${result.y}</td>
+                <td>${result.r}</td>
+                <td>${result.isHit ? "Success" : "Failed"}</td>
+            </tr>
+        </core:forEach>
     </table>
 </div>
 <div align="left">

@@ -1,104 +1,113 @@
 package com.example.lab2_4;
 
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.LinkedList;
+import java.util.Arrays;
+import java.util.List;
 
-import static java.lang.Math.pow;
 
-@WebServlet(name = "AreaCheckServlet", urlPatterns = "/AreaCheckServlet")
+@WebServlet("/check")
 public class AreaCheckServlet extends HttpServlet {
-    LinkedList<String> response = new LinkedList<>();
-    String message;
-    Double x, y, r;
-    String check;
 
-    private Result result;
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ServletContext servletContext = request.getServletContext();
-        check = request.getParameter("check");
-        x = Double.parseDouble(request.getParameter("x"));
-        y = Double.parseDouble(request.getParameter("y"));
-        r = Double.parseDouble(request.getParameter("r"));
+    public static class CoordinatesValidator {
+        private final double x, y, r;
 
-        if (checkNull()) {
-            if (check.equals("clear")) {
-                this.response = new LinkedList<>();
-                servletContext.setAttribute("response", this.response);
-                response.sendRedirect("index.jsp");
-                return;
+        public CoordinatesValidator(double x, double y, double r) {
+            this.x = x;
+            this.y = y;
+            this.r = r;
+        }
+
+        public boolean checkData() {
+            if (!checkX()) System.out.println("X validation haven't passed");
+            if (!checkY()) System.out.println("Y validation haven't passed");
+            if (!checkR()) System.out.println("R validation haven't passed");
+            System.out.println(x);
+            System.out.println(y);
+            System.out.println(r);
+            return checkX() && checkY() && checkR();
+        }
+
+        private boolean checkX() {
+            return x > -5 && x < 3;
+        }
+
+        private boolean checkY() {
+            List<? extends Number> YValues = Arrays.asList(-2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2);
+            return YValues.contains(y);
+        }
+
+        private boolean checkR() {
+            List<? extends Number> YValues = Arrays.asList(1, 1.5, 2, 2.5, 3);
+            return YValues.contains(r);
+        }
+
+        protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+            LocalDateTime time = LocalDateTime.now();
+            double x;
+            double y;
+            double r;
+            try {
+                x = ControllerServlet.getDouble(request, "x");
+                y = ControllerServlet.getDouble(request, "y");
+                r = ControllerServlet.getDouble(request, "r");
+
+                CoordinatesValidator validator = new CoordinatesValidator(x, y, r);
+
+                if (!validator.checkData()) {
+                    System.out.println("Validation haven't passed");
+                    return;
+                }
+
+                ResultBean bean = (ResultBean) request.getSession().getAttribute("results");
+                if (bean == null) {
+                    bean = new ResultBean();
+                    request.getSession().setAttribute("results", bean);
+                }
+
+                class AreaChecker {
+                    static boolean isInArea(double x, double y, double r) {
+                        // Upper left corner with 1/4 circle of radius R
+                        if (x <= 0 && y >= 0) {
+                            return (x * x + y * y) <= r * r;
+                        }
+                        // Bottom left corner with triangle
+                        if (x <= 0 && y <= 0) {
+                            return (x >= -r) && (y >= -x - r);
+                        }
+                        // Bottom right corner with rectangle
+                        if (x >= 0 && y <= 0) {
+                            return (x <= r / 2) && (y >= -r);
+                        }
+                        // Upper right corner with nothing in it
+                        return false;
+                    }
+                }
+
+
+                ResultBean.Result result = new ResultBean.Result(String.valueOf((int) x),
+                        String.valueOf(y), String.valueOf(r), AreaChecker.isInArea(x, y, r));
+                bean.addResult(result);
+
+                // code for checking script evaluation time
+                Duration duration = Duration.between(time, LocalDateTime.now());
+                System.out.println("Time elapsed: " + duration + " milliseconds");
+
+                // Respond with JSON
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+            } catch (NumberFormatException e) {
+//            ErrorUtil.sendError(response, SC_UNPROCESSABLE_ENTITY, "Invalid number format");
+            } catch (Exception e) {
+//            e.printStackTrace();
+//            ErrorUtil.sendError(response, SC_INTERNAL_SERVER_ERROR, "Internal Server Error");
             }
-            if (checkRange()) {
-                String currentTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-                long startTime = System.nanoTime();
-                validate(x, y, r);
-                long timeResponse = (System.nanoTime() - startTime);
-                result.setX(x);
-                result.setY(y);
-                result.setR(r);
-                result.setCurrentTime(currentTime);
-                result.setTimeResponse(timeResponse);
-                result.setMessage(message);
-
-            } else {
-                this.result.setMessage("Value is incorrect!");
-            }
-        } else {
-            response.setStatus(422);
-        }
-
-    }
-
-    void validate(double x, double y, double r) {
-        boolean area1;
-        boolean area2;
-        boolean area3;
-        area1 = (((-(r)) <= (x)) && ((x) <= (0))) && (((0) <= (y)) && ((y) <= (r / 2)));
-        area2 = (x >= 0) && (y >= 0) && (x <= r) && (y <= r / 2);
-        double x1;
-        double y1;
-        x1 = pow(x, 2);
-        y1 = pow(y, 2);
-        area3 = ((x1 + y1 == r) && (x >= 0) && (y <= 0));
-        if (area1 || area2 || area3) {
-            message = "<span style='color: green'>Success</span>";
-        } else {
-            message = "<span style='color: red'>Failed</span>";
         }
     }
-
-    boolean checkRange() {
-        if (x <= -5 || x >= 3) {
-            return false;
-        }
-        if (!((y == -2) || (y == -1.5) || (y == -1) || (y == -0.5) || (y == 0) || (y == 0.5) || (y == 1) || (y == 1.5) || (y == 2))) {
-            return false;
-        }
-        if (!((r == 1) || (r == 1.5) || (r == 2) || (r == 2.5) || (r == 3))) {
-            return false;
-        }
-        return true;
-    }
-
-    boolean checkNull() {
-        if (check != null && !check.trim().equals("") && (x != null && y != null && r != null)) {
-            return true;
-        }
-        return false;
-    }
-
-
-
-
-
-
 }
