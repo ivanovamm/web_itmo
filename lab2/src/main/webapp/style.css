@@ -2,12 +2,25 @@ html, body {
     height: 100%;
     margin: 0;
 }
+.container{
+display: flex;
+align-items: center;}
 
 body {
     background-size: 100% 100%;
     font-family: Arial, sans-serif;
     font-weight: 500;
     background: linear-gradient(45deg, hotpink, skyblue 100%) no-repeat fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+canvas{
+    order: 2;
+}
+
+form{
+    order: 1;
 }
 .clock{
     color: lightpink;
@@ -19,6 +32,7 @@ header {
 }
 
 .r {
+    justify-content: center;
     margin-right: 179px;
     margin-top: 10px;
     text-align: right;
@@ -27,6 +41,7 @@ header {
 }
 
 .y {
+    justify-content: center;
     margin: 0px;
     text-align: right;
     color: black;
@@ -34,6 +49,7 @@ header {
 }
 
 .x {
+    justify-content: center;
     margin-top: 20px;
     margin-right: 176px;
     margin-bottom: 10px;
@@ -43,6 +59,7 @@ header {
 }
 
 table {
+    order: 3;
     overflow: scroll;
     height: 100%;
     margin-left: 20px;

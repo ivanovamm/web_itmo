@@ -1,50 +1,110 @@
-package com.example.lab2_4;
+package com.example.lab2_4;//package com.example.lab2_4;
+//
+//
+//import jakarta.servlet.ServletException;
+//import jakarta.servlet.annotation.HttpMethodConstraint;
+//import jakarta.servlet.annotation.ServletSecurity;
+//import jakarta.servlet.annotation.WebServlet;
+//import jakarta.servlet.http.HttpServlet;
+//import jakarta.servlet.http.HttpServletRequest;
+//import jakarta.servlet.http.HttpServletResponse;
+//
+//import java.io.IOException;
+//import java.util.HashMap;
+//import java.util.Map;
+//@WebServlet("/controller")
+//public class ControllerServlet extends HttpServlet {
+//
+//    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//        processRequest(request, response);
+//    }
+//
+//    protected void doPost(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException{
+//        processRequest(request, response);
+//    }
+//
+//    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//        try {
+//            if (request.getParameter("x") != null && request.getParameter("y") != null && request.getParameter("r") != null) {
+//                request.getRequestDispatcher("./check").forward(request, response);
+//            } else {
+//                request.getRequestDispatcher("./index.jsp").forward(request, response);
+//            }
+//
+//        } catch (ServletException | IOException e) {
+//
+//        }
+//    }
+//
+//    public static double getDouble(HttpServletRequest request, String parameter) {
+//        String param = request.getParameter(parameter);
+//        return Double.parseDouble(param.replace(",", "."));
+//    }
+//}
 
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.HttpMethodConstraint;
-import jakarta.servlet.annotation.ServletSecurity;
+
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
+import jakarta.servlet.http.*;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 @WebServlet("/controller")
-@ServletSecurity(
-        httpMethodConstraints = {
-                @HttpMethodConstraint(value = "POST", rolesAllowed = "admin")
-        }
-)
-
 public class ControllerServlet extends HttpServlet {
+    private static final String DATA_VALIDATION_ERROR = "Data validation failed: Please check input values.";
+    private static final int UNPROCESSABLE_ENTITY = 422;
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        handleRequest(request, response);
     }
 
-//    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-//            throws ServletException, IOException {
-//    }
+    private void handleRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (!isValidRequest(request)) {
+            sendError(response, DATA_VALIDATION_ERROR, UNPROCESSABLE_ENTITY);
+            return;
+        }
 
-
-    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            if (request.getParameter("x") != null && request.getParameter("y") != null && request.getParameter("r") != null) {
-                request.getRequestDispatcher("./check").forward(request, response);
-            } else {
-                request.getRequestDispatcher("./index.jsp").forward(request, response);
+            if (
+                    Double.parseDouble(request.getParameter("y")) < -5
+                            || Double.parseDouble(request.getParameter("y")) > 5
+            ) {
+                sendError(response, DATA_VALIDATION_ERROR, UNPROCESSABLE_ENTITY);
+                return;
             }
 
-        } catch (ServletException | IOException e) {
+            Double.parseDouble(request.getParameter("x"));
+            Integer.parseInt(request.getParameter("r"));
 
+            response.sendRedirect("./checkArea?" + request.getQueryString());
+        } catch (NumberFormatException e) {
+            sendError(response, "Invalid number format", UNPROCESSABLE_ENTITY);
+        } catch (Exception e) {
+            sendError(response, "Internal server error", HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 
-    public static double getDouble(HttpServletRequest request, String parameter) {
-        String param = request.getParameter(parameter);
-        return Double.parseDouble(param.replace(",", "."));
+    private boolean isValidRequest(HttpServletRequest request) {
+        return isParameterValid(request, "x") &&
+                isParameterValid(request, "y") &&
+                isParameterValid(request, "r");
+    }
+
+    private boolean isParameterValid(HttpServletRequest request, String paramName) {
+        String paramValue = request.getParameter(paramName);
+        return paramValue != null && !paramValue.isEmpty();
+    }
+
+    private void sendError(HttpServletResponse response, String errorMessage, int statusCode) throws IOException {
+        Map<String, Object> jsonResponse = new HashMap<>();
+        jsonResponse.put("error", errorMessage);
+        jsonResponse.put("status", statusCode);
+
+        response.setContentType("application/json");
+        response.setStatus(statusCode);
+        response.getWriter().write(new Gson().toJson(jsonResponse));
     }
 }
