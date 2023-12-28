@@ -53,29 +53,23 @@ function clear_table() {
 }
 
 
-async function send(x, y, r) {
-    try {
-        const response = await fetch("controller", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: new URLSearchParams({
-                "x": x,
-                "y": y,
-                "r": r
-            })
-        })
+function send(x, y, r) {
+    const form = $('<form>', {
+        action: "controller",
+        method: "get"
+    });
 
-        if (!response.ok) {
-            throw new Error(`Server responded with bad getaway status: ${response.status} ${await response.text()}`);
-        }
+    const args = { action: "submitForm", x: x, y: y, r: r };
+    Object.entries(args).forEach(entry => {
+        const [key, value] = entry;
+        $('<input>').attr({
+            type: "hidden",
+            name: key,
+            value: value
+        }).appendTo(form);
+    });
 
-        const serverAnswer = await response.json();
-        return serverAnswer.isHit;
-    } catch (error) {
-        return null;
-    }
+    form.appendTo('body').submit()
 }
 
 

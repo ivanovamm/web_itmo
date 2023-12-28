@@ -31,7 +31,7 @@
 <%--<div class="x"><b>Input X:</b>--%>
 <%--    <input type="text" size="40" id="x_value" , placeholder="(-5 ... 3)">--%>
 <%--</div>--%>
-<form method="post" id="form" align="right">
+<form method="post" id="form" align="right" >
     <div class="x"><b>Input X:</b>
         <input type="text" size="40" id="x_value" , placeholder="(-5 ... 3)">
     </div>
@@ -55,7 +55,7 @@
     </div>
 </form>
 <div align="right">
-    <button class="check" id="check" onclick="check_values()">Check</button>
+    <button class="check" id="check" onclick="check_values()" type="submit">Check</button>
 </div>
 
 <form class="canvas-form" method="post" action="/controller">
@@ -91,7 +91,7 @@
     <% } %>
 </div>
 <div align="left">
-    <button id="clear" class="clear" onclick="clear_table()">Clear</button>
+    <button id="clear" class="clear" onclick="clear_table()" type="button">Clear</button>
 </div>
 </div>
 </body>
