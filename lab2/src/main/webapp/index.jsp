@@ -80,12 +80,12 @@
         </tr>
             <%
             for (Point point : points) { %>
-        <tr>
+        <tbody>
             <td><%= point.getX() %></td>
             <td><%= point.getY() %></td>
             <td><%= point.getR() %></td>
             <td><%= point.isInArea() ? "<span class=\"success\">true</span>" : "<span class=\"fail\">false</span>" %></td>
-        </tr>
+        </tbody>
                 <% } %>
     </table>
     <% } %>
