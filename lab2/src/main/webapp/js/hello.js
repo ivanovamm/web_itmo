@@ -43,8 +43,9 @@ function check_values() {
         alert('Пожалуйста, введите корректное числовое значение x в диапазоне от -5 до 3.');
         return;
     }
-    if (!isNaN(Number(y)) && !isNaN(Number(r))){
-    send(x, y, r);}
+    if (!isNaN(Number(y)) && !isNaN(Number(r))) {
+        send(x, y, r);
+    }
 }
 
 function clear_table() {
@@ -59,7 +60,7 @@ function send(x, y, r) {
         method: "get"
     });
 
-    const args = { action: "submitForm", x: x, y: y, r: r };
+    const args = {action: "submitForm", x: x, y: y, r: r};
     Object.entries(args).forEach(entry => {
         const [key, value] = entry;
         $('<input>').attr({
