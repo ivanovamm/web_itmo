@@ -1,49 +1,4 @@
-package com.example.lab2_4;//package com.example.lab2_4;
-//
-//
-//import jakarta.servlet.ServletException;
-//import jakarta.servlet.annotation.HttpMethodConstraint;
-//import jakarta.servlet.annotation.ServletSecurity;
-//import jakarta.servlet.annotation.WebServlet;
-//import jakarta.servlet.http.HttpServlet;
-//import jakarta.servlet.http.HttpServletRequest;
-//import jakarta.servlet.http.HttpServletResponse;
-//
-//import java.io.IOException;
-//import java.util.HashMap;
-//import java.util.Map;
-//@WebServlet("/controller")
-//public class ControllerServlet extends HttpServlet {
-//
-//    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        processRequest(request, response);
-//    }
-//
-//    protected void doPost(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException{
-//        processRequest(request, response);
-//    }
-//
-//    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        try {
-//            if (request.getParameter("x") != null && request.getParameter("y") != null && request.getParameter("r") != null) {
-//                request.getRequestDispatcher("./check").forward(request, response);
-//            } else {
-//                request.getRequestDispatcher("./index.jsp").forward(request, response);
-//            }
-//
-//        } catch (ServletException | IOException e) {
-//
-//        }
-//    }
-//
-//    public static double getDouble(HttpServletRequest request, String parameter) {
-//        String param = request.getParameter(parameter);
-//        return Double.parseDouble(param.replace(",", "."));
-//    }
-//}
-
-
-
+package com.example.lab2_4;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import com.google.gson.Gson;
@@ -69,15 +24,15 @@ public class ControllerServlet extends HttpServlet {
 
         try {
             if (
-                    Double.parseDouble(request.getParameter("y")) < -5
-                            || Double.parseDouble(request.getParameter("y")) > 5
+                    Double.parseDouble(request.getParameter("x")) < -5
+                            || Double.parseDouble(request.getParameter("x")) > 3
             ) {
                 sendError(response, DATA_VALIDATION_ERROR, UNPROCESSABLE_ENTITY);
                 return;
             }
 
-            Double.parseDouble(request.getParameter("x"));
-            Integer.parseInt(request.getParameter("r"));
+            Double.parseDouble(request.getParameter("y"));
+            Double.parseDouble(request.getParameter("r"));
 
             response.sendRedirect("./checkArea?" + request.getQueryString());
         } catch (NumberFormatException e) {
@@ -108,3 +63,4 @@ public class ControllerServlet extends HttpServlet {
         response.getWriter().write(new Gson().toJson(jsonResponse));
     }
 }
+

@@ -5,11 +5,11 @@ import java.util.Objects;
 public class Point {
     private final double x;
     private final double y;
-    private final int r;
+    private final double r;
 
     private final boolean isInArea;
 
-    public Point(double x, double y, int r) {
+    public Point(double x, double y, double r) {
         this.x = x;
         this.y = y;
         this.r = r;
@@ -41,7 +41,7 @@ public class Point {
         return y;
     }
 
-    public int getR() {
+    public double getR() {
         return r;
     }
 
@@ -54,7 +54,7 @@ public class Point {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Point point = (Point) o;
-        return x == point.x && Double.compare(y, point.y) == 0 && r == point.r;
+        return y == point.y && Double.compare(x, point.x) == 0 && r == point.r;
     }
 
     @Override

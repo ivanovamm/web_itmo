@@ -84,7 +84,7 @@
             <td><%= point.getX() %></td>
             <td><%= point.getY() %></td>
             <td><%= point.getR() %></td>
-            <td><%= point.isInArea() ? "<span class=\"success\">true</span>" : "<span class=\"fail\">false</span>" %></td>
+            <td><%= point.isInArea() ? "<span class=\"success\">success</span>" : "<span class=\"fail\">fail</span>" %></td>
         </tbody>
                 <% } %>
     </table>
