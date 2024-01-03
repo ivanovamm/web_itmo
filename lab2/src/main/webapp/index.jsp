@@ -7,10 +7,9 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.example.lab2_4.Point" %>
-<%@ page import="java.util.HashMap" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page import="com.example.lab2_4.Point" %>
 <%@ page import="java.util.List" %>
+<%@ page import="static java.time.LocalDateTime.*" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,22 +75,23 @@
             <th>Y</th>
             <th>Status</th>
             <th>Time</th>
-            <th>Execution time</th>
         </tr>
             <%
+
             for (Point point : points) { %>
         <tbody>
             <td><%= point.getX() %></td>
             <td><%= point.getY() %></td>
             <td><%= point.getR() %></td>
             <td><%= point.isInArea() ? "<span class=\"success\">success</span>" : "<span class=\"fail\">fail</span>" %></td>
-        </tbody>
+            <td><%= now().getHour()+":"+now().getMinute()+":"+now().getSecond()%></td>
+            </tbody>
                 <% } %>
     </table>
     <% } %>
 </div>
 <div align="left">
-    <button id="clear" class="clear" onclick="clear_table()" type="button">Clear</button>
+<%--    <button id="clear" class="clear" onclick="clear_table()" type="button">Clear</button>--%>
 </div>
 </div>
 </body>

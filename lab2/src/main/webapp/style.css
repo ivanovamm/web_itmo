@@ -3,11 +3,11 @@ html, body {
     margin: 0;
 }
 .container{
-display: flex;
+/*display: flex;*/
 align-items: center;}
 
 .box{
-    display: flex;
+    /*display: flex;*/
     align-items: center;
     justify-content: center;
 }
@@ -24,17 +24,9 @@ body {
     font-family: Arial, sans-serif;
     font-weight: 500;
     background: linear-gradient(45deg, hotpink, skyblue 100%) no-repeat fixed;
-    display: flex;
-    flex-direction: column;
     justify-content: center;
 }
-canvas{
-    order: 2;
-}
 
-form{
-    order: 1;
-}
 .clock{
     color: lightpink;
 }
