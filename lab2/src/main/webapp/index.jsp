@@ -9,7 +9,6 @@
 <%@ page import="com.example.lab2_4.Point" %>
 <%@ page import="com.example.lab2_4.Point" %>
 <%@ page import="java.util.List" %>
-<%@ page import="static java.time.LocalDateTime.*" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,73 +25,82 @@
     Иванова М.М., Группа P3208, Вариант 534879
 </header>
 <div class="container">
-<noscript>включите джава скрипт</noscript>
-<%--<div class="x"><b>Input X:</b>--%>
-<%--    <input type="text" size="40" id="x_value" , placeholder="(-5 ... 3)">--%>
-<%--</div>--%>
-<form method="post" id="form" align="right" >
-    <div class="x"><b>Input X:</b>
-        <input type="text" size="40" id="x_value" , placeholder="(-5 ... 3)">
+    <noscript>включите джава скрипт</noscript>
+    <%--<div class="x"><b>Input X:</b>--%>
+    <%--    <input type="text" size="40" id="x_value" , placeholder="(-5 ... 3)">--%>
+    <%--</div>--%>
+    <div class="form">
+        <form method="post" id="form">
+            <div class="x"><b>Input X:</b>
+                <input type="text" size="40" id="x_value" , placeholder="(-5 ... 3)">
+            </div>
+            <div  class="y">
+                <b>Input Y:</b>
+                <input type="checkbox" name="optionY" value="-2" id="y_value_-2" onchange="uncheckAllY(this)"> -2
+                <input type="checkbox" name="optionY" value="-1.5" onchange="uncheckAllY(this)"> -1.5
+                <input type="checkbox" name="optionY" value="-0.5" onchange="uncheckAllY(this)"> -0.5
+                <input type="checkbox" name="optionY" value="0" onchange="uncheckAllY(this)"> 0
+                <input type="checkbox" name="optionY" value="0.5" onchange="uncheckAllY(this)"> 0.5
+                <input type="checkbox" name="optionY" value="1" onchange="uncheckAllY(this)"> 1
+                <input type="checkbox" name="optionY" value="1.5" onchange="uncheckAllY(this)"> 1.5
+                <input type="checkbox" name="optionY" value="2" onchange="uncheckAllY(this)"> 2
+            </div>
+            <div class="r" ><b> Input R:</b>
+                <input type="checkbox" name="optionR" value="1" onchange="uncheckAllR(this)"> 1
+                <input type="checkbox" name="optionR" value="1.5" onchange="uncheckAllR(this)"> 1.5
+                <input type="checkbox" name="optionR" value="2" onchange="uncheckAllR(this)"> 2
+                <input type="checkbox" name="optionR" value="2.5" onchange="uncheckAllR(this)"> 2.5
+                <input type="checkbox" name="optionR" value="3" onchange="uncheckAllR(this)"> 3
+            </div>
+        </form>
+        <div align="right">
+            <button class="check" id="check" onclick="check_values()" type="submit">Check</button>
+        </div>
     </div>
-    <div align="right" class="y">
-        <b>Input Y:</b>
-        <input type="checkbox" name="optionY" value="-2" id="y_value_-2" onchange="uncheckAllY(this)"> -2
-        <input type="checkbox" name="optionY" value="-1.5" onchange="uncheckAllY(this)"> -1.5
-        <input type="checkbox" name="optionY" value="-0.5" onchange="uncheckAllY(this)"> -0.5
-        <input type="checkbox" name="optionY" value="0" onchange="uncheckAllY(this)"> 0
-        <input type="checkbox" name="optionY" value="0.5" onchange="uncheckAllY(this)"> 0.5
-        <input type="checkbox" name="optionY" value="1" onchange="uncheckAllY(this)"> 1
-        <input type="checkbox" name="optionY" value="1.5" onchange="uncheckAllY(this)"> 1.5
-        <input type="checkbox" name="optionY" value="2" onchange="uncheckAllY(this)"> 2
-    </div>
-    <div class="r" align="right"><b> Input R:</b>
-        <input type="checkbox" name="optionR" value="1" onchange="uncheckAllR(this)"> 1
-        <input type="checkbox" name="optionR" value="1.5" onchange="uncheckAllR(this)"> 1.5
-        <input type="checkbox" name="optionR" value="2" onchange="uncheckAllR(this)"> 2
-        <input type="checkbox" name="optionR" value="2.5" onchange="uncheckAllR(this)"> 2.5
-        <input type="checkbox" name="optionR" value="3" onchange="uncheckAllR(this)"> 3
-    </div>
-</form>
-<div align="right">
-    <button class="check" id="check" onclick="check_values()" type="submit">Check</button>
-</div>
-
-<form class="canvas-form" method="post" action="/controller">
-    <canvas width="400" height="410" id="graph"></canvas>
-</form>
-<%--<canvas width="400" height="400" id="graph"></canvas>--%>
-<div>
-    <table id="table">
-        <thead>
-            <%
+    <form class="canvas-form" method="post" action="/controller">
+        <canvas width="400" height="410" id="graph"></canvas>
+    </form>
+    <%--<canvas width="400" height="400" id="graph"></canvas>--%>
+    <div class="table">
+        <table id="table">
+            <thead>
+                <%
                 List<Point> points = (List<Point>) application.getAttribute("points");
-                if (points == null || points.isEmpty()) {
-            %>
-            <% } else { %>
-        <tr>
-            <th>R</th>
-            <th>X</th>
-            <th>Y</th>
-            <th>Status</th>
-            <th>Time</th>
-        </tr>
-            <%
+                if (points == null || points.isEmpty()) {%>
+
+
+
+                <% } else { %>
+            <tr>
+                <th>R</th>
+                <th>X</th>
+                <th>Y</th>
+                <th>Status</th>
+                <th>Time</th>
+            </tr>
+                <%
 
             for (Point point : points) { %>
-        <tbody>
-            <td><%= point.getX() %></td>
-            <td><%= point.getY() %></td>
-            <td><%= point.getR() %></td>
-            <td><%= point.isInArea() ? "<span class=\"success\">success</span>" : "<span class=\"fail\">fail</span>" %></td>
-            <td><%= now().getHour()+":"+now().getMinute()+":"+now().getSecond()%></td>
+            <tbody>
+            <td><%= point.getX() %>
+            </td>
+            <td><%= point.getY() %>
+            </td>
+            <td><%= point.getR() %>
+            </td>
+            <td><%= point.isInArea() ? "<span class=\"success\">success</span>" : "<span class=\"fail\">fail</span>" %>
+            </td>
+            <td><%= point.getTime()%>
+            </td>
             </tbody>
-                <% } %>
-    </table>
-    <% } %>
-</div>
-<div align="left">
-<%--    <button id="clear" class="clear" onclick="clear_table()" type="button">Clear</button>--%>
-</div>
+            <% } %>
+        </table>
+        <% } %>
+    </div>
+
+    <div align="left">
+        <%--    <button id="clear" class="clear" onclick="clear_table()" type="button">Clear</button>--%>
+    </div>
 </div>
 </body>
 </html>

@@ -1,5 +1,7 @@
 package com.example.lab2_4;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 
 public class Point {
@@ -8,12 +10,14 @@ public class Point {
     private final double r;
 
     private final boolean isInArea;
+    private String time;
 
     public Point(double x, double y, double r) {
         this.x = x;
         this.y = y;
         this.r = r;
         this.isInArea = isInside(x, y, r);
+        this.time = LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+":"+LocalDateTime.now().getSecond();
     }
 
     private boolean isInside(double x, double y, double r) {
@@ -48,6 +52,8 @@ public class Point {
     public boolean isInArea() {
         return isInArea;
     }
+
+    public String getTime(){return time;}
 
     @Override
     public boolean equals(Object o) {

@@ -11,12 +11,11 @@
     <script src="js/hello.js"></script>
     <title>I LOVE WEB STILL</title>
 </head>
-<header align="center">
+<header>
     Результаты проверки
 </header>
 <body>
-<div class="box">
-<table id="result_table" align="centre">
+<table id="result_table" class="result_table">
     <thead>
     <th>X</th>
     <th>Y</th>
@@ -47,9 +46,7 @@
     <div id="back">
         <a href="index.jsp">Вернуться к форме</a>
     </div>
-
 </table>
-</div>
 </body>
 </html>
 
