@@ -56,7 +56,7 @@ function numToPixels(x, y) {
 //event listener срабатывает при нажатии на график
 canvas.addEventListener("click", function (event) {
     //let rRadioButton = $("input[name='enter_r']")
-    const rVal = $("input[name='enter_r']:checked").val();
+    const rVal = $(document.querySelector('input[name="optionR"]:checked').value);
     //если r не выбран подсвечиваем его и завершаем обработчик
     if (rVal === undefined) {
         $(".r-block").addClass("red-alert");
@@ -190,7 +190,7 @@ function drawCanvas(context){
     drawLine(context, 50, 195, 50, 205, 2)
     context.fillText("-5", (canvas.width / 2) - 158, canvas.height / 2 + 15);
 
-    const rVal = $("input[name='enter_r']:checked").val();
+    const rVal = $(document.querySelector('input[name="optionR"]:checked').value);
     //если r не выбран подсвечиваем его и завершаем обработчик
     if (rVal !== undefined) {
         //настройка context и отрисовка круга
@@ -255,11 +255,11 @@ function drawCanvas(context){
         });
 
 }
-
-let Checkboxes = $('input[name="enter_r"]');
-Checkboxes.on('change', function() {
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    drawCanvas(context);
-});
+//
+// let Checkboxes = $('input[name="enter_r"]');
+// Checkboxes.on('change', function() {
+//     context.clearRect(0, 0, canvas.width, canvas.height);
+//     drawCanvas(context);
+// });
 
 drawCanvas(context);

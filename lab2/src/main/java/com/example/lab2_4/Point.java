@@ -17,7 +17,19 @@ public class Point {
         this.y = y;
         this.r = r;
         this.isInArea = isInside(x, y, r);
-        this.time = LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+":"+LocalDateTime.now().getSecond();
+        String h;
+        String m;
+        String s;
+        if (LocalDateTime.now().getHour() < 10) {
+            h = "0" + LocalDateTime.now().getHour();
+        } else h = String.valueOf(LocalDateTime.now().getHour());
+        if (LocalDateTime.now().getMinute() < 10) {
+            m = "0" + LocalDateTime.now().getMinute();
+        } else m = String.valueOf(LocalDateTime.now().getMinute());
+        if (LocalDateTime.now().getSecond() < 10) {
+            s = "0" + LocalDateTime.now().getSecond();
+        } else s = String.valueOf(LocalDateTime.now().getSecond());
+        this.time = h + ":" + m + ":" + s;
     }
 
     private boolean isInside(double x, double y, double r) {
@@ -53,7 +65,9 @@ public class Point {
         return isInArea;
     }
 
-    public String getTime(){return time;}
+    public String getTime() {
+        return time;
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -24,14 +24,20 @@ public class ControllerServlet extends HttpServlet {
 
         try {
             if (
-                    Double.parseDouble(request.getParameter("x")) < -5
-                            || Double.parseDouble(request.getParameter("x")) > 3
+                    Double.parseDouble(request.getParameter("x")) < -2
+                            || Double.parseDouble(request.getParameter("x")) > 2
+            ) {
+                sendError(response, DATA_VALIDATION_ERROR, UNPROCESSABLE_ENTITY);
+                return;
+            }
+            if (
+                    Double.parseDouble(request.getParameter("y")) < -5
+                            || Double.parseDouble(request.getParameter("y")) > 3
             ) {
                 sendError(response, DATA_VALIDATION_ERROR, UNPROCESSABLE_ENTITY);
                 return;
             }
 
-            Double.parseDouble(request.getParameter("y"));
             Double.parseDouble(request.getParameter("r"));
 
             response.sendRedirect("./checkArea?" + request.getQueryString());

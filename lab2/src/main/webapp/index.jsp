@@ -32,25 +32,17 @@
     <div class="form">
         <form method="post" id="form">
             <div class="x"><b>Input X:</b>
-                <input type="text" size="40" id="x_value" , placeholder="(-5 ... 3)">
+                <input type="text" size="40" id="x_value" , placeholder="[-2 ... 2]">
             </div>
-            <div  class="y">
-                <b>Input Y:</b>
-                <input type="checkbox" name="optionY" value="-2" id="y_value_-2" onchange="uncheckAllY(this)"> -2
-                <input type="checkbox" name="optionY" value="-1.5" onchange="uncheckAllY(this)"> -1.5
-                <input type="checkbox" name="optionY" value="-0.5" onchange="uncheckAllY(this)"> -0.5
-                <input type="checkbox" name="optionY" value="0" onchange="uncheckAllY(this)"> 0
-                <input type="checkbox" name="optionY" value="0.5" onchange="uncheckAllY(this)"> 0.5
-                <input type="checkbox" name="optionY" value="1" onchange="uncheckAllY(this)"> 1
-                <input type="checkbox" name="optionY" value="1.5" onchange="uncheckAllY(this)"> 1.5
-                <input type="checkbox" name="optionY" value="2" onchange="uncheckAllY(this)"> 2
+            <div class="y"><b>Input Y:</b>
+                <input type="text" size="40" id="y_value" , placeholder="[-5 ... 3]">
             </div>
             <div class="r" ><b> Input R:</b>
                 <input type="checkbox" name="optionR" value="1" onchange="uncheckAllR(this)"> 1
-                <input type="checkbox" name="optionR" value="1.5" onchange="uncheckAllR(this)"> 1.5
-                <input type="checkbox" name="optionR" value="2" onchange="uncheckAllR(this)"> 2
-                <input type="checkbox" name="optionR" value="2.5" onchange="uncheckAllR(this)"> 2.5
-                <input type="checkbox" name="optionR" value="3" onchange="uncheckAllR(this)"> 3
+                <input type="checkbox" name="optionR" value="1.5" onchange="uncheckAllR(this)"> 2
+                <input type="checkbox" name="optionR" value="2" onchange="uncheckAllR(this)"> 3
+                <input type="checkbox" name="optionR" value="2.5" onchange="uncheckAllR(this)"> 4
+                <input type="checkbox" name="optionR" value="3" onchange="uncheckAllR(this)"> 5
             </div>
         </form>
         <div align="right">

@@ -66,11 +66,12 @@ table {
 table th {
     font-weight: bold;
     padding: 5px;
-    background: lightblue;
-    border: 1px solid lightpink;
+    /*background: hotpink;*/
+    border: 1px white;
 }
 
 table td {
+    align-items: center;
     border: 1px solid white;
     padding: 5px;
 }
@@ -97,7 +98,7 @@ button {
 }
 
 .check {
-    background-color: skyblue;
+    background-color: lightblue;
 }
 
 .graph {
