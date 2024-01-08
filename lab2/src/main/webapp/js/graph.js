@@ -51,19 +51,38 @@ function numToPixels(x, y) {
     return [mouseX, mouseY];
 }
 
+function getSelectedRValue() {
+    const checkboxes = document.querySelectorAll('input[name="optionR"]:checked');
 
+    if (checkboxes.length > 0) {
+        return checkboxes[0].value;
+    }
 
+    return null; // Вернуть null, если ни один чекбокс не выбран
+}
+
+function extractResultFromTable() {
+    const table = document.getElementById('result_table');
+    if (table.rows.length > 0) {
+        const lastRow = table.rows[table.rows.length - 1];
+
+        const resultCell = lastRow.cells[lastRow.cells.length - 1];
+
+        const resultValue = resultCell.querySelector('span').classList.contains('success');
+
+        console.log(resultValue);
+
+        return resultValue;
+    }
+    return null;
+}
 //event listener срабатывает при нажатии на график
 canvas.addEventListener("click", function (event) {
-    //let rRadioButton = $("input[name='enter_r']")
-    const rVal = $(document.querySelector('input[name="optionR"]:checked').value);
-    //если r не выбран подсвечиваем его и завершаем обработчик
-    if (rVal === undefined) {
-        $(".r-block").addClass("red-alert");
-        setTimeout(() => {
-            $(".r-block").removeClass("red-alert");
-        }, 100);
-        return;
+    const rVal = getSelectedRValue();
+    if (rVal === null) {
+
+       alert("Пожалуйста, выберете координату r!!!!!!!!!!!!!!!!!!!")
+
     }
     let mouseX = event.clientX - canvas.getBoundingClientRect().left;
     let mouseY = event.clientY - canvas.getBoundingClientRect().top;
@@ -93,23 +112,21 @@ canvas.addEventListener("click", function (event) {
             y = Math.floor(mouseY / 30);
             y = (5 - (y + ((mouseY - y * 30) * (1 / 30)))).toFixed(2);
         }
-        function createInputElem(name, value){
-            let canvasDataField = document.createElement("input");
-            canvasDataField.type = "hidden";
-            canvasDataField.name = name;
-            canvasDataField.value = value;
-            return canvasDataField
-        }
-        let x_filed = createInputElem("enter_x", x.toString());
-        let y_filed = createInputElem("enter_y", y.toString());
-        let r_filed = createInputElem("enter_r", rVal);
-        let form = document.getElementsByClassName("canvas-form")[0];
-        form.appendChild(x_filed);
-        form.appendChild(y_filed);
-        form.appendChild(r_filed);
-        form.submit();
+        console.log(x);
+        console.log(y);
+        console.log(rVal);
+        $.get(`http://localhost:8080/lab2_4-1.0-SNAPSHOT/checkArea?action=submitForm&x=${x.toString()}&y=${y.toString()}&r=${rVal}`)
+            .done(function(response) {
+                console.log(response);
+                window.location.reload();
+            })
+            .fail(function(error) {
+                console.error('Error:', error);
+            });
     }
 });
+
+
 
 function drawCanvas(context){
     //ось x
@@ -190,7 +207,7 @@ function drawCanvas(context){
     drawLine(context, 50, 195, 50, 205, 2)
     context.fillText("-5", (canvas.width / 2) - 158, canvas.height / 2 + 15);
 
-    const rVal = $(document.querySelector('input[name="optionR"]:checked').value);
+    const rVal = getSelectedRValue();
     //если r не выбран подсвечиваем его и завершаем обработчик
     if (rVal !== undefined) {
         //настройка context и отрисовка круга
@@ -209,8 +226,8 @@ function drawCanvas(context){
         context.globalAlpha = 0.5
         context.moveTo(200, 200)
         context.lineTo(200 + (rVal * 30), 200);
-        context.lineTo(200 + (rVal * 30), 200 - (rVal * 30))
-        context.lineTo(200, 200 - (rVal * 30))
+        context.lineTo(200 + (rVal * 30), 200 - (rVal/2 * 30))
+        context.lineTo(200, 200 - (rVal/2 * 30))
         context.lineTo(200, 200)
         context.closePath();
         context.fill();
@@ -218,7 +235,7 @@ function drawCanvas(context){
         //отрисовка треугольника
         context.beginPath();
         context.moveTo(200, 200)
-        context.lineTo(200 + (rVal * 30), 200);
+        context.lineTo(200 - (rVal * 30), 200);
         context.lineTo(200, 200 + (rVal/2 * 30))
         context.lineTo(200, 200)
         context.closePath();
@@ -231,35 +248,34 @@ function drawCanvas(context){
     }
 
     //запрос серверу и отрисовка точек
-    $.post((window.location.href).toString().replace("/ControllerServlet", "/AreaCheckServlet"))
+    $.get("http://localhost:8080/lab2_4-1.0-SNAPSHOT/getPoints")
         .done(function(response) {
             console.log(response);
-            let arr = response.split(',').map(Number);
+            let arr = response.split(' ');
             let i = 0;
             let temp = [];
             for (let num of arr){
-                console.log(num);
-                if (i%3===0){
-                    let hit = num === "true" ? "green": "red";
-                    temp.push(hit);
-                }
-                if (i%3===1){
-                    temp.push(num);
-                }
                 if (i%3===2){
-                    drawDot(context, numToPixels(temp[1], num)[0], numToPixels(temp[1], num)[1], temp[0]);
+                    let hit = num === "true" ? "green": "red";
+                    drawDot(context, numToPixels(temp[0], temp[1])[0], numToPixels(temp[0], temp[1])[1], hit);
                     temp = [];
+                }else{
+                    temp.push(num);
                 }
                 i++;
             }
         });
 
 }
-//
-// let Checkboxes = $('input[name="enter_r"]');
-// Checkboxes.on('change', function() {
-//     context.clearRect(0, 0, canvas.width, canvas.height);
-//     drawCanvas(context);
-// });
+
+const checkboxes = document.querySelectorAll('input[name="optionR"]');
+
+checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        console.log(`Checkbox with value ${this.value} is checked: ${this.checked}`);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        drawCanvas(context);
+    });
+});
 
 drawCanvas(context);

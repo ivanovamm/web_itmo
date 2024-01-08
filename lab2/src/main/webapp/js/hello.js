@@ -1,3 +1,13 @@
+function uncheckAllY(checkbox) {
+    var checkboxes = document.getElementsByName('optionY');
+    checkboxes.forEach(function (current) {
+        if (current !== checkbox) {
+            current.checked = false;
+        }
+    });
+
+}
+
 function uncheckAllR(checkbox) {
     var checkboxes = document.getElementsByName('optionR');
     checkboxes.forEach(function (current) {
@@ -12,8 +22,13 @@ const table = document.getElementById("table");
 
 function check_values() {
     const x = document.getElementById("x_value").value;
-    const y = document.getElementById("y_value").value;
+    let y = undefined;
     let r = undefined;
+    if (!(document.querySelector('input[name="optionY"]:checked') == null)) {
+        y = document.querySelector('input[name="optionY"]:checked').value;
+    } else {
+        alert('Пожалуйста, выберете координату y.')
+    }
     if (!(document.querySelector('input[name="optionR"]:checked') == null)) {
         r = document.querySelector('input[name="optionR"]:checked').value;
     } else {
@@ -24,20 +39,11 @@ function check_values() {
         return;
     }
 
-    if (y === '') {
-        alert('Пожалуйста, введите координату y.');
+    if (isNaN(Number(x)) || (x < -5 || x > 3)) {
+        alert('Пожалуйста, введите корректное числовое значение x в диапазоне от -5 до 3.');
         return;
     }
-
-    if (isNaN(Number(x)) || (x < -2 || x > 2)) {
-        alert('Пожалуйста, введите корректное числовое значение x в диапазоне от -2 до 2.');
-        return;
-    }
-    if (isNaN(Number(y)) || (y < -5 || y > 3)) {
-        alert('Пожалуйста, введите корректное числовое значение y в диапазоне от -5 до 3.');
-        return;
-    }
-    if (!isNaN(Number(r))) {
+    if (!isNaN(Number(y)) && !isNaN(Number(r))) {
         send(x, y, r);
     }
 }
