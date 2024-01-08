@@ -1,6 +1,7 @@
 package com.example.lab2_4;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 
 public class Point {
@@ -9,38 +10,30 @@ public class Point {
     private final double r;
 
     private final boolean isInArea;
-    private final String time;
+    private String time;
 
     public Point(double x, double y, double r) {
         this.x = x;
         this.y = y;
         this.r = r;
         this.isInArea = isInside(x, y, r);
-        String h;
-        String m;
-        String s;
-        if (LocalDateTime.now().getHour() < 10) {
-            h = "0" + LocalDateTime.now().getHour();
-        } else h = String.valueOf(LocalDateTime.now().getHour());
-        if (LocalDateTime.now().getMinute() < 10) {
-            m = "0" + LocalDateTime.now().getMinute();
-        } else m = String.valueOf(LocalDateTime.now().getMinute());
-        if (LocalDateTime.now().getSecond() < 10) {
-            s = "0" + LocalDateTime.now().getSecond();
-        } else s = String.valueOf(LocalDateTime.now().getSecond());
-        this.time = h + ":" + m + ":" + s;
+        this.time = LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+":"+LocalDateTime.now().getSecond();
     }
 
     private boolean isInside(double x, double y, double r) {
+        // Треугольник в 1 четверти
         if (x >= 0 && y >= 0) {
             return (x <= r) && (y <= r / 2);
         }
+        // Прямоугольник во 2 четверти
         if (x < 0 && y >= 0) {
-            return (x * x + y * y) <= (r/2 * r/2);
+            return (x >= -r / 2) && (y <= r);
         }
+        // Сектор в 3 четверти
         if (x <= 0 && y <= 0) {
-            return (x >= -r) && (-y <= -r / 2 + x / 2) && (y >= -r / 2);
+            return (x * x + y * y) <= (r * r);
         }
+        // 4 четверть
         return false;
     }
 
@@ -60,9 +53,7 @@ public class Point {
         return isInArea;
     }
 
-    public String getTime() {
-        return time;
-    }
+    public String getTime(){return time;}
 
     @Override
     public boolean equals(Object o) {
