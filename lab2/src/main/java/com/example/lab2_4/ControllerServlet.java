@@ -12,7 +12,7 @@ public class ControllerServlet extends HttpServlet {
     }
 
     private void handleRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (!isValidRequest(request)) {
+        if (!checkRequest(request)) {
             return;
         }
 
@@ -23,10 +23,8 @@ public class ControllerServlet extends HttpServlet {
             ) {
                 return;
             }
-
             Double.parseDouble(request.getParameter("y"));
             Double.parseDouble(request.getParameter("r"));
-
             response.sendRedirect("./checkArea?" + request.getQueryString());
         } catch (NumberFormatException e) {
 
@@ -35,15 +33,15 @@ public class ControllerServlet extends HttpServlet {
         }
     }
 
-    private boolean isValidRequest(HttpServletRequest request) {
-        return isParameterValid(request, "x") &&
-                isParameterValid(request, "y") &&
-                isParameterValid(request, "r");
+    private boolean checkRequest(HttpServletRequest request) {
+        return checkValues(request, "x") &&
+                checkValues(request, "y") &&
+                checkValues(request, "r");
     }
 
-    private boolean isParameterValid(HttpServletRequest request, String paramName) {
-        String paramValue = request.getParameter(paramName);
-        return paramValue != null && !paramValue.isEmpty();
+    private boolean checkValues(HttpServletRequest request, String value) {
+        String valueName = request.getParameter(value);
+        return valueName != null && !valueName.isEmpty();
     }
 
 

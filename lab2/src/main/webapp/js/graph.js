@@ -58,25 +58,9 @@ function getSelectedRValue() {
         return checkboxes[0].value;
     }
 
-    return null; // Вернуть null, если ни один чекбокс не выбран
-}
-
-function extractResultFromTable() {
-    const table = document.getElementById('result_table');
-    if (table.rows.length > 0) {
-        const lastRow = table.rows[table.rows.length - 1];
-
-        const resultCell = lastRow.cells[lastRow.cells.length - 1];
-
-        const resultValue = resultCell.querySelector('span').classList.contains('success');
-
-        console.log(resultValue);
-
-        return resultValue;
-    }
     return null;
 }
-//event listener срабатывает при нажатии на график
+
 canvas.addEventListener("click", function (event) {
     const rVal = getSelectedRValue();
     if (rVal === null) {

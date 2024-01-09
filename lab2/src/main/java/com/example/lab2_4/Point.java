@@ -21,15 +21,12 @@ public class Point {
     }
 
     private boolean isInside(double x, double y, double r) {
-        // Треугольник в 1 четверти
         if (x >= 0 && y >= 0) {
             return (x <= r) && (y <= r / 2);
         }
-        // Прямоугольник во 2 четверти
         if (x < 0 && y >= 0) {
             return (x >= -r / 2) && (y <= r);
         }
-        // Сектор в 3 четверти
         if (x <= 0 && y <= 0) {
             return (x * x + y * y) <= (r * r);
         }
@@ -63,18 +60,5 @@ public class Point {
         return y == point.y && Double.compare(x, point.x) == 0 && r == point.r;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(x, y, r);
-    }
 
-    @Override
-    public String toString() {
-        return "Point{" +
-                "x=" + x +
-                ", y=" + y +
-                ", r=" + r +
-                ", isInArea=" + isInArea +
-                '}';
-    }
 }

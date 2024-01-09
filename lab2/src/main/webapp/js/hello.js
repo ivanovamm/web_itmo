@@ -48,10 +48,6 @@ function check_values() {
     }
 }
 
-function clear_table() {
-    const tbody = table.querySelector('tbody');
-    tbody.innerHTML = '';
-}
 
 
 function send(x, y, r) {

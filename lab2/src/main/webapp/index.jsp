@@ -68,8 +68,6 @@
                 List<Point> points = (List<Point>) application.getAttribute("points");
                 if (points == null || points.isEmpty()) {%>
 
-
-
                 <% } else { %>
             <tr>
                 <th>R</th>
