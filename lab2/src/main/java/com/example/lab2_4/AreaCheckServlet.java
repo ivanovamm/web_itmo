@@ -11,6 +11,16 @@ import java.util.List;
 
 @WebServlet("/checkArea")
 public class AreaCheckServlet extends HttpServlet {
+    private static final int UNPROCESSABLE_ENTITY = 422;
+    private static final String SUBMIT = "submitForm";
+
+    private static final String ACTION = "action";
+    private static final String X = "x";
+    private static final String Y = "y";
+    private static final String RADIUS = "r";
+
+    private static final String RESULT = "result";
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -26,21 +36,21 @@ public class AreaCheckServlet extends HttpServlet {
     private void handleRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            double x = Double.parseDouble(request.getParameter("x"));
-            double y = Double.parseDouble(request.getParameter("y"));
-            double r = Double.parseDouble(request.getParameter("r"));
+            double x = Double.parseDouble(request.getParameter(X));
+            double y = Double.parseDouble(request.getParameter(Y));
+            double r = Double.parseDouble(request.getParameter(RADIUS));
             Point point = new Point(x, y, r);
 
             List<Point> points = getPoints(request.getServletContext());
             points.add(point);
 
-            String action = request.getParameter("action");
-            if ("submitForm".equals(action)) {
-                GetResult(request, response, x, y, r, point);
+            String action = request.getParameter(ACTION);
+            if (SUBMIT.equals(action)) {
+                getResult(request, response, x, y, r, point);
             }
 
-        } catch (NumberFormatException e) {
-        } catch (IOException e) {
+        } catch (NumberFormatException | IOException e) {
+            response.getWriter().write(UNPROCESSABLE_ENTITY);
         }
     }
 
@@ -48,17 +58,18 @@ public class AreaCheckServlet extends HttpServlet {
         List<Point> points = (List<Point>) context.getAttribute("points");
         if (points == null) {
             points = new ArrayList<>();
+            // TODO: 09.01.2024 излишнее поведение метода  
             context.setAttribute("points", points);
         }
         return points;
     }
 
-    private void GetResult(HttpServletRequest request, HttpServletResponse response, double x, double y, double r, Point point)
+    private void getResult(HttpServletRequest request, HttpServletResponse response, double x, double y, double r, Point point)
             throws ServletException, IOException {
-        request.setAttribute("x", x);
-        request.setAttribute("y", y);
-        request.setAttribute("r", r);
-        request.setAttribute("result", point.isInArea());
+        request.setAttribute(X, x);
+        request.setAttribute(Y, y);
+        request.setAttribute(RADIUS, r);
+        request.setAttribute(RESULT, point.isInArea());
         request.getRequestDispatcher("./result.jsp").forward(request, response);
     }
 

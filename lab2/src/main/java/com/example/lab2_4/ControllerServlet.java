@@ -5,6 +5,12 @@ import java.io.IOException;
 
 @WebServlet("/controller")
 public class ControllerServlet extends HttpServlet {
+    private static final String X = "x";
+    private static final String Y = "y";
+    private static final String RADIUS = "r";
+
+    private static final int  UNPROCESSABLE_ENTITY = 422;
+
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -18,25 +24,23 @@ public class ControllerServlet extends HttpServlet {
 
         try {
             if (
-                    Double.parseDouble(request.getParameter("x")) < -5
-                            || Double.parseDouble(request.getParameter("x")) > 3
+                    Double.parseDouble(request.getParameter(X)) < -5
+                            || Double.parseDouble(request.getParameter(X)) > 3
             ) {
                 return;
             }
-            Double.parseDouble(request.getParameter("y"));
-            Double.parseDouble(request.getParameter("r"));
+            Double.parseDouble(request.getParameter(Y));
+            Double.parseDouble(request.getParameter(RADIUS));
             response.sendRedirect("./checkArea?" + request.getQueryString());
-        } catch (NumberFormatException e) {
-
         } catch (Exception e) {
-
+            response.getWriter().write(UNPROCESSABLE_ENTITY);
         }
     }
 
     private boolean checkRequest(HttpServletRequest request) {
-        return checkValues(request, "x") &&
-                checkValues(request, "y") &&
-                checkValues(request, "r");
+        return checkValues(request, X) &&
+                checkValues(request, Y) &&
+                checkValues(request, RADIUS);
     }
 
     private boolean checkValues(HttpServletRequest request, String value) {

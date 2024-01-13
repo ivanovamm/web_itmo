@@ -7,7 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.example.lab2_4.Point" %>
-<%@ page import="com.example.lab2_4.Point" %>
 <%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,9 +25,6 @@
 </header>
 <div class="container">
     <noscript>включите джава скрипт</noscript>
-    <%--<div class="x"><b>Input X:</b>--%>
-    <%--    <input type="text" size="40" id="x_value" , placeholder="(-5 ... 3)">--%>
-    <%--</div>--%>
     <div class="form">
         <form method="post" id="form">
             <div class="x"><b>Input X:</b>
@@ -97,7 +93,6 @@
     </div>
 
     <div align="left">
-        <%--    <button id="clear" class="clear" onclick="clear_table()" type="button">Clear</button>--%>
     </div>
 </div>
 </body>
